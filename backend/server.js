@@ -1,4 +1,5 @@
 import express from 'express';
+import helmet from 'helmet';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
@@ -260,8 +261,9 @@ async function llmStream(prompt, res, { type = 'explanation', sseType = null } =
 }
 
 // Middleware
+app.use(helmet());
 app.use(cors());
-app.use(express.json({ limit: '50mb' }));
+app.use(express.json({ limit: '5mb' })); // Reduced from 50mb for better security
 
 // --- Gemini AI Route (Standard) ---
 app.post('/api/gemini/generate', async (req, res) => {
