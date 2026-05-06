@@ -261,9 +261,40 @@ async function llmStream(prompt, res, { type = 'explanation', sseType = null } =
 }
 
 // Middleware
-app.use(helmet());
-app.use(cors());
-app.use(express.json({ limit: '5mb' })); // Reduced from 50mb for better security
+app.use(helmet({
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+}));
+
+// ─── CORS ────────────────────────────────────────────────────────────────────
+// Allow the frontend origin (set CORS_ORIGIN env var in production).
+// Falls back to permitting all *.vercel.app preview URLs during development.
+const ALLOWED_ORIGINS = (process.env.CORS_ORIGIN || '')
+    .split(',')
+    .map(o => o.trim())
+    .filter(Boolean);
+
+app.use(cors({
+    origin: (origin, callback) => {
+        // Allow requests with no origin (curl, Postman, server-to-server)
+        if (!origin) return callback(null, true);
+        // Explicit allow-list from env
+        if (ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
+        // Allow all *.vercel.app subdomains (covers preview deployments)
+        if (origin.endsWith('.vercel.app')) return callback(null, true);
+        // Allow localhost for local dev
+        if (origin.startsWith('http://localhost')) return callback(null, true);
+        console.warn(`CORS blocked: ${origin}`);
+        return callback(new Error(`CORS: origin ${origin} not allowed`));
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+
+// Handle preflight OPTIONS requests for all routes
+app.options('*', cors());
+
+app.use(express.json({ limit: '5mb' }));
 
 // --- Gemini AI Route (Standard) ---
 app.post('/api/gemini/generate', async (req, res) => {
