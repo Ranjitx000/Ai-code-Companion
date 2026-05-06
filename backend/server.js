@@ -638,6 +638,11 @@ List 2-3 other places in the codebase (if visible from context) that may have th
 });
 
 // Start Server
-app.listen(PORT, () => {
-    console.log(`✅ Secure Backend API running closely at http://localhost:${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log(`✅ Secure Backend API running closely at http://localhost:${PORT}`);
+    });
+}
+
+// Export for Vercel Serverless
+export default app;
