@@ -560,7 +560,7 @@ const Codeview = () => {
     };
     
     return (
-        <div className="bg-[#1e1e1e] text-[#cccccc] min-h-screen font-sans flex flex-col selection:bg-[#264f78]">
+        <div className="bg-[#1e1e1e] text-[#cccccc] h-screen overflow-hidden font-sans flex flex-col selection:bg-[#264f78]">
             {/* VS Code Title Bar */}
             <header className="bg-[#181818] h-8 flex items-center justify-between px-3 border-b border-[#2b2b2b] shrink-0 select-none z-[100] relative">
                 {/* Menu Items */}
@@ -759,10 +759,10 @@ const Codeview = () => {
                 
                 {/* Main Content Area */}
                 <section ref={mainContentRef} className="flex-1 flex flex-col relative bg-[#1e1e1e] overflow-hidden">
-                    {/* Editor Panel */}
+                    {/* Editor Panel — rigid slice: flex-basis holds the % and flex-shrink:0 prevents collapse */}
                     <div 
-                        className="overflow-hidden flex flex-col bg-[#1e1e1e]"
-                        style={{ height: `${topPanelHeight}%` }}
+                        className="overflow-hidden flex flex-col bg-[#1e1e1e] flex-shrink-0"
+                        style={{ flexBasis: `${topPanelHeight}%` }}
                         onMouseUp={handleMouseUp}
                     >
                         <EditorTabs 
@@ -782,14 +782,17 @@ const Codeview = () => {
                         </div>
                     </div>
 
-                    {/* Vertical Resizer */}
+                    {/* Horizontal Resizer — 4px touch target, shrink-0 so it never squeezes */}
                     <div 
                         onMouseDown={startHorizontalResize}
-                        className="h-1 cursor-row-resize bg-[#2b2b2b] hover:bg-[#007acc] transition-colors duration-200 z-10"
+                        className="h-1 flex-shrink-0 cursor-row-resize bg-[#2b2b2b] hover:bg-[#007acc] transition-colors duration-200 z-10"
                     />
 
-                    {/* Intelligence Tabs Panel — always visible so architecture tab works without an open file */}
-                    <div className="flex-1 flex flex-col min-h-0 bg-[#1e1e1e]">
+                    {/* Intelligence / Terminal Panel — explicit height so content can never push the editor */}
+                    <div 
+                        className="flex flex-col bg-[#1e1e1e] overflow-hidden"
+                        style={{ height: `calc(${100 - topPanelHeight}% - 4px)` }}
+                    >
                         <Tabs 
                             activeTab={activeTab} 
                             setActiveTab={setActiveTab} 

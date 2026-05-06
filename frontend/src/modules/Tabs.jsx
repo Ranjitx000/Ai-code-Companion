@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import DOMPurify from 'dompurify';
 import { marked } from 'marked';
 import MindMap from './MindMap';
@@ -30,6 +30,15 @@ const TabButton = ({ name, activeTab, onClick, title }) => (
 );
 
 const Tabs = ({ activeTab, setActiveTab, analysis, isLoading, onGenerate, onAsk, error, currentEditorCode, isIndexComplete, repoInfo, hasOpenFile }) => {
+    const scrollRef = useRef(null);
+    
+    // Auto-scroll for streaming output
+    useEffect(() => {
+        if (activeTab === 'explanation' && scrollRef.current) {
+            scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+        }
+    }, [analysis.explanation, activeTab]);
+
     // ✅ FIX: separate state per input so tabs don't fight each other
     const [workspaceQuestion, setWorkspaceQuestion] = useState('');
     const [explanationQuestion, setExplanationQuestion] = useState('');
@@ -194,7 +203,14 @@ const Tabs = ({ activeTab, setActiveTab, analysis, isLoading, onGenerate, onAsk,
             );
         }
 
-        if (isLoading) return <Loader message="AI is thinking..." />;
+        // Special case: for streaming tabs, show the content even if loading
+        // so we can see the text grow.
+        const isStreamingTab = ['explanation', 'incident'].includes(activeTab);
+        const hasContent = activeTab === 'explanation' ? !!analysis.explanation : 
+                          activeTab === 'incident' ? true : false; // incident has its own internal loader
+
+        if (isLoading && !isStreamingTab) return <Loader message="AI is thinking..." />;
+        
         if (error) return (
             <div className="text-red-400 bg-red-900/30 border border-red-500/40 p-4 rounded-md text-[13px]">
                 <strong>Error:</strong> {error}
@@ -215,8 +231,8 @@ const Tabs = ({ activeTab, setActiveTab, analysis, isLoading, onGenerate, onAsk,
         switch (activeTab) {
             case 'explanation':
                 return (
-                    <div>
-                        <div className="flex items-center mb-4">
+                    <div className="flex flex-col h-full">
+                        <div className="flex items-center mb-4 sticky top-0 bg-[#1e1e1e] z-10 pb-2">
                             <input
                                 type="text"
                                 value={explanationQuestion}
@@ -228,14 +244,24 @@ const Tabs = ({ activeTab, setActiveTab, analysis, isLoading, onGenerate, onAsk,
                             <button
                                 onClick={handleExplanationAsk}
                                 disabled={isLoading}
-                                className="bg-[#007acc] hover:bg-[#005f9e] text-white px-4 py-2 text-[13px] transition-colors disabled:opacity-50 ml-2"
+                                className="bg-[#007acc] hover:bg-[#005f9e] text-white px-4 py-2 text-[13px] transition-colors disabled:opacity-50 ml-2 whitespace-nowrap"
                             >
-                                Ask AI
+                                {isLoading && !analysis.explanation ? '...' : 'Ask AI'}
                             </button>
                         </div>
-                        {analysis.explanation ? (
-                             <div className="ai-markdown-output prose prose-invert prose-sm max-w-none text-[#cccccc]" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked.parse(analysis.explanation)) }}></div>
-                        ) : <p className="text-[#969696] text-[13px]">Ask a general question or something specific about the code in the editor.</p>}
+                        <div className="flex-1">
+                            {isLoading && !analysis.explanation ? (
+                                <div className="py-10 text-center text-[#969696] animate-pulse">
+                                    AI is analyzing the file...
+                                </div>
+                            ) : analysis.explanation ? (
+                                 <div className="ai-markdown-output prose prose-invert prose-sm max-w-none text-[#cccccc]" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked.parse(analysis.explanation)) }}></div>
+                            ) : (
+                                <div className="text-center p-10 text-[#969696] border border-dashed border-[#3c3c3c] text-[13px] rounded-lg">
+                                    Ask a general question or something specific about the code in the editor.
+                                </div>
+                            )}
+                        </div>
                     </div>
                 );
             case 'mindmap':
@@ -274,7 +300,7 @@ const Tabs = ({ activeTab, setActiveTab, analysis, isLoading, onGenerate, onAsk,
     const showGenerateButton = ['mindmap', 'quality', 'comment', 'tests', 'architecture'].includes(activeTab);
 
     return (
-        <div className="flex-1 flex flex-col bg-[#1e1e1e] min-h-0 w-full overflow-hidden text-[#cccccc]">
+        <div className="h-full w-full flex flex-col bg-[#1e1e1e] overflow-hidden text-[#cccccc]">
             <div className="flex flex-col md:flex-row border-b border-[#333333] flex-shrink-0 justify-between items-start md:items-center pl-2">
                 <div className="flex flex-nowrap overflow-x-auto w-full md:w-auto custom-scrollbar gap-2">
                     <TabButton name="workspace" title="Workspace" activeTab={activeTab} onClick={setActiveTab} />
@@ -301,8 +327,11 @@ const Tabs = ({ activeTab, setActiveTab, analysis, isLoading, onGenerate, onAsk,
                     </div>
                 )}
             </div>
-            <div className="flex-grow p-4 overflow-y-auto custom-scrollbar">
-                {renderContent()}
+            {/* This div is the ONLY scrolling container — content grows inside here, not outside */}
+            <div ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden custom-scrollbar">
+                <div className="p-4">
+                    {renderContent()}
+                </div>
             </div>
         </div>
     );
