@@ -1,4 +1,6 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
+
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 import { parseRepoUrl, fetchRepoTree, fetchFileContent } from '../services/githubService';
 import { callGemini, streamGemini } from '../services/geminiService';
 import { prompts } from '../utils/promptTemplates';
@@ -174,7 +176,7 @@ const Codeview = () => {
             if (!repoInfo) return;
             try {
                 const res = await fetch(
-                    `http://localhost:3001/api/rag/stats?owner=${repoInfo.owner}&repo=${repoInfo.repo}`
+                    `${API_BASE}/api/rag/stats?owner=${repoInfo.owner}&repo=${repoInfo.repo}`
                 );
                 if (res.ok) {
                     setIsIndexComplete(true); // index exists on disk
@@ -226,7 +228,7 @@ const Codeview = () => {
         setIsIndexing(true);
         setError(null);
         try {
-            const response = await fetch('http://localhost:3001/api/rag/index', {
+            const response = await fetch(`${API_BASE}/api/rag/index`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ owner: repoInfo.owner, repo: repoInfo.repo })
@@ -258,7 +260,7 @@ const Codeview = () => {
         setIsTabLoading(true);
         setError(null);
         try {
-            const response = await fetch('http://localhost:3001/api/rag/query', {
+            const response = await fetch(`${API_BASE}/api/rag/query`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -500,7 +502,7 @@ const Codeview = () => {
                     // Clear previous result so loading state shows
                     setAnalysis(prev => ({ ...prev, architecture: null }));
                     const treeJson = JSON.stringify(fileTree, null, 2);
-                    const response = await fetch('http://localhost:3001/api/rag/dfd', {
+                    const response = await fetch(`${API_BASE}/api/rag/dfd`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({

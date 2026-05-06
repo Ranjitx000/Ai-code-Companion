@@ -33,9 +33,11 @@ const EXAMPLE_TRACES = [
     },
 ];
 
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+
 // Streaming fetch helper matching the backend SSE protocol
 const streamAnalyzeError = async ({ owner, repo, stackTrace, onMeta, onChunk, onDone, onError }) => {
-    const response = await fetch('http://localhost:3001/api/rag/analyze-error', {
+    const response = await fetch(`${API_BASE}/api/rag/analyze-error`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ owner, repo, stackTrace }),
