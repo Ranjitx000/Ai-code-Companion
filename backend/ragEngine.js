@@ -3,11 +3,12 @@ import { HuggingFaceInferenceEmbeddings } from "@langchain/community/embeddings/
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import fs from "fs";
 import path from "path";
+import os from "os";
 
 // ---------------------------------------------------------------------------
 // Cache directory for persisting indexes across restarts
 // ---------------------------------------------------------------------------
-const CACHE_DIR = path.resolve("./rag-cache");
+const CACHE_DIR = path.join(os.tmpdir(), "rag-cache");
 
 // ---------------------------------------------------------------------------
 // Language map: extension → human-readable language name
