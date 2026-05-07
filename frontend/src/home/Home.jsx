@@ -29,7 +29,7 @@ import { useAuth } from '../hooks/AuthContext';
 import AuthModal from '../shared/AuthModal';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-
+import logo from '../../public/logo.png';
 const Home = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -140,17 +140,15 @@ const Home = () => {
       </div>
 
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-[100] px-6 py-4">
+      <nav className="fixed top-0 left-0 right-0 z-[100] px-4 sm:px-6 py-4">
         <motion.div 
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className="max-w-7xl mx-auto flex items-center justify-between px-6 py-3 rounded-2xl border border-white/5 bg-white/[0.03] backdrop-blur-xl shadow-2xl"
+          className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 py-3 rounded-2xl border border-white/5 bg-white/[0.03] backdrop-blur-xl shadow-2xl"
         >
           <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
-              <Code size={20} className="text-white" />
-            </div>
-            <span className="text-xl font-bold tracking-tight text-white">Companion<span className="text-indigo-400">AI</span></span>
+            <img src="/logo.png" alt="AI Code Companion Logo" className="h-8 sm:h-10 object-contain shrink-0 rounded-lg" />
+            <span className="text-lg sm:text-xl font-bold tracking-tight text-white hidden sm:block">AI Code <span className="text-indigo-400">Companion</span></span>
           </div>
 
           <div className="hidden md:flex items-center gap-8">
@@ -158,27 +156,27 @@ const Home = () => {
             <a href="#faq" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">FAQ</a>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 sm:gap-4">
             {!user ? (
               <button 
                 onClick={() => setIsAuthModalOpen(true)}
-                className="text-sm font-semibold text-slate-300 hover:text-white transition-all"
+                className="text-xs sm:text-sm font-semibold text-slate-300 hover:text-white transition-all whitespace-nowrap"
               >
                 Sign In
               </button>
             ) : (
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center border border-white/10">
-                  <User size={14} className="text-slate-300" />
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/10 flex items-center justify-center border border-white/10 shrink-0">
+                  <User className="text-slate-300 w-3 h-3 sm:w-3.5 sm:h-3.5" />
                 </div>
                 <button onClick={logout} className="text-slate-400 hover:text-red-400 transition-colors">
-                  <LogOut size={18} />
+                  <LogOut className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
                 </button>
               </div>
             )}
             <button 
               onClick={() => user ? navigate('/Codeview') : setIsAuthModalOpen(true)}
-              className="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold transition-all shadow-lg shadow-indigo-500/20"
+              className="px-4 py-2 sm:px-5 sm:py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs sm:text-sm font-bold transition-all shadow-lg shadow-indigo-500/20 whitespace-nowrap"
             >
               Launch App
             </button>
@@ -187,12 +185,12 @@ const Home = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-40 pb-20 px-6">
+      <section className="relative pt-32 sm:pt-40 pb-16 sm:pb-20 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto flex flex-col items-center text-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="mb-6 px-4 py-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-400 text-xs font-bold tracking-widest uppercase flex items-center gap-2"
+            className="mb-6 px-4 py-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-400 text-[10px] sm:text-xs font-bold tracking-widest uppercase flex items-center gap-2"
           >
             
             Trusted by 50,000+ engineers worldwide
@@ -202,9 +200,9 @@ const Home = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-6xl md:text-8xl font-black tracking-tight text-white mb-8 leading-[1.05]"
+            className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-white mb-6 sm:mb-8 leading-[1.1] sm:leading-[1.05]"
           >
-            Ship <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400">Flawless</span> Code <br />
+            Ship <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400">Flawless</span> Code <br className="hidden sm:block" />
             with Intelligent Logic.
           </motion.h1>
 
@@ -212,7 +210,7 @@ const Home = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-xl text-slate-400 max-w-2xl mb-12 leading-relaxed"
+            className="text-base sm:text-lg lg:text-xl text-slate-400 max-w-2xl mb-10 sm:mb-12 leading-relaxed"
           >
             The world's first AI-native code engineering platform that understands intent, catches logical fallacies, and optimizes for scale before you even commit.
           </motion.p>
@@ -263,7 +261,7 @@ const Home = () => {
       </section>
 
       {/* Product Preview Section */}
-      <section className="py-20 px-6 relative overflow-hidden">
+      <section className="py-16 sm:py-20 px-4 sm:px-6 relative overflow-hidden">
         <div className="max-w-6xl mx-auto">
           <motion.div 
             initial={{ opacity: 0, y: 40, rotateX: 5 }}
@@ -286,36 +284,36 @@ const Home = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-24 border-y border-white/5 bg-white/[0.01]">
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
+      <section className="py-16 sm:py-24 border-y border-white/5 bg-white/[0.01]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-2 md:grid-cols-4 gap-8 sm:gap-12 text-center">
           <div>
-            <div className="text-4xl font-black text-white mb-2">3.5M+</div>
-            <div className="text-slate-500 text-sm font-semibold tracking-wide uppercase">Lines Reviewed</div>
+            <div className="text-3xl sm:text-4xl font-black text-white mb-1 sm:mb-2">3.5M+</div>
+            <div className="text-slate-500 text-xs sm:text-sm font-semibold tracking-wide uppercase">Lines Reviewed</div>
           </div>
           <div>
-            <div className="text-4xl font-black text-white mb-2">85%</div>
-            <div className="text-slate-500 text-sm font-semibold tracking-wide uppercase">Bugs Prevented</div>
+            <div className="text-3xl sm:text-4xl font-black text-white mb-1 sm:mb-2">85%</div>
+            <div className="text-slate-500 text-xs sm:text-sm font-semibold tracking-wide uppercase">Bugs Prevented</div>
           </div>
           <div>
-            <div className="text-4xl font-black text-white mb-2">12ms</div>
-            <div className="text-slate-500 text-sm font-semibold tracking-wide uppercase">Avg. Response</div>
+            <div className="text-3xl sm:text-4xl font-black text-white mb-1 sm:mb-2">12ms</div>
+            <div className="text-slate-500 text-xs sm:text-sm font-semibold tracking-wide uppercase">Avg. Response</div>
           </div>
           <div>
-            <div className="text-4xl font-black text-white mb-2">SOC2</div>
-            <div className="text-slate-500 text-sm font-semibold tracking-wide uppercase">Security Certified</div>
+            <div className="text-3xl sm:text-4xl font-black text-white mb-1 sm:mb-2">SOC2</div>
+            <div className="text-slate-500 text-xs sm:text-sm font-semibold tracking-wide uppercase">Security Certified</div>
           </div>
         </div>
       </section>
 
       {/* Features Grid */}
-      <section id="features" className="py-32 px-6">
+      <section id="features" className="py-20 sm:py-32 px-4 sm:px-6">
         <div className="max-w-[1400px] mx-auto">
-          <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-6xl font-black text-white mb-6">Built for Excellence.</h2>
-            <p className="text-slate-400 max-w-2xl mx-auto text-lg">Powerful features designed to handle the most complex codebases with surgical precision.</p>
+          <div className="text-center mb-12 sm:mb-20">
+            <h2 className="text-3xl sm:text-4xl md:text-6xl font-black text-white mb-4 sm:mb-6">Built for Excellence.</h2>
+            <p className="text-slate-400 max-w-2xl mx-auto text-base sm:text-lg">Powerful features designed to handle the most complex codebases with surgical precision.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-6">
             {features.map((f, i) => (
               <motion.div 
                 key={i}
@@ -335,10 +333,10 @@ const Home = () => {
       </section>
     
       {/* FAQ Section */}
-      <section id="faq" className="py-32 px-6">
+      <section id="faq" className="py-20 sm:py-32 px-4 sm:px-6">
         <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-black text-white mb-4">Frequently Asked Questions</h2>
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">Frequently Asked Questions</h2>
             <p className="text-slate-500 font-medium">Everything you need to know about Companion AI.</p>
           </div>
           <div className="space-y-4">
@@ -371,28 +369,28 @@ const Home = () => {
       </section>
 
       {/* Final CTA */}
-      <section className="py-40 px-6 text-center">
+      <section className="py-24 sm:py-40 px-4 sm:px-6 text-center">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-5xl md:text-8xl font-black text-white tracking-tighter mb-10 leading-none">
-            Scale your code <br />
+          <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tighter mb-8 sm:mb-10 leading-[1.1] sm:leading-none">
+            Scale your code <br className="hidden sm:block" />
             <span className="text-indigo-500 italic">without the friction.</span>
           </h2>
           <button 
             onClick={() => user ? navigate('/Codeview') : setIsAuthModalOpen(true)}
-            className="px-12 py-5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xl transition-all shadow-[0_0_60px_rgba(79,70,229,0.3)] mb-8"
+            className="w-full sm:w-auto px-8 sm:px-12 py-4 sm:py-5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-black text-lg sm:text-xl transition-all shadow-[0_0_60px_rgba(79,70,229,0.3)] mb-6 sm:mb-8"
           >
             Launch Your First Review
           </button>
-          <p className="text-slate-500 font-medium tracking-wide">NO CREDIT CARD REQUIRED. START IN 30 SECONDS.</p>
+          <p className="text-slate-500 text-xs sm:text-sm font-medium tracking-wide">NO CREDIT CARD REQUIRED. START IN 30 SECONDS.</p>
         </div>
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-20 px-6">
-        <div className="max-w-5xl mx-auto rounded-[3rem] p-12 md:p-20 bg-gradient-to-tr from-indigo-900/20 to-purple-900/20 border border-indigo-500/20 relative overflow-hidden text-center">
+      <section className="py-16 sm:py-20 px-4 sm:px-6">
+        <div className="max-w-5xl mx-auto rounded-3xl sm:rounded-[3rem] p-8 sm:p-12 md:p-20 bg-gradient-to-tr from-indigo-900/20 to-purple-900/20 border border-indigo-500/20 relative overflow-hidden text-center">
           <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 blur-[80px] -z-10" />
-          <h2 className="text-3xl md:text-5xl font-black text-white mb-6 tracking-tight">Stay ahead of the curve.</h2>
-          <p className="text-slate-400 max-w-xl mx-auto mb-10 text-lg font-medium">Join 10,000+ developers receiving our weekly engineering deep dives and AI updates.</p>
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-black text-white mb-4 sm:mb-6 tracking-tight">Stay ahead of the curve.</h2>
+          <p className="text-slate-400 max-w-xl mx-auto mb-8 sm:mb-10 text-base sm:text-lg font-medium">Join 10,000+ developers receiving our weekly engineering deep dives and AI updates.</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
             <input 
               type="email" 
@@ -408,15 +406,13 @@ const Home = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-20 border-t border-white/5 px-6">
+      <footer className="py-12 sm:py-20 border-t border-white/5 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-12 mb-12 sm:mb-16">
             <div className="col-span-1 md:col-span-1">
               <div className="flex items-center gap-2 mb-6">
-                <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center">
-                  <Code size={18} className="text-white" />
-                </div>
-                <span className="text-lg font-bold text-white tracking-tight">Companion<span className="text-indigo-400">AI</span></span>
+                <img src="/logo.png" alt="AI Code Companion Logo" className="h-8 object-contain shrink-0" />
+                <span className="text-lg font-bold text-white tracking-tight">AI Code <span className="text-indigo-400">Companion</span></span>
               </div>
               <p className="text-slate-500 text-sm leading-relaxed">
                 Empowering the next generation of software engineers with cognitive AI tools that understand code at a human level.
@@ -450,9 +446,9 @@ const Home = () => {
               </ul>
             </div>
           </div>
-          <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-white/5 text-slate-600 text-xs font-bold tracking-widest uppercase">
-            <p>© 2026 Companion AI. ALL RIGHTS RESERVED.</p>
-            <div className="flex items-center gap-6 mt-6 md:mt-0">
+          <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-white/5 text-slate-600 text-[10px] sm:text-xs font-bold tracking-widest uppercase">
+            <p className="mb-4 md:mb-0 text-center md:text-left">© 2026 AI Code Companion. ALL RIGHTS RESERVED.</p>
+            <div className="flex items-center justify-center gap-4 sm:gap-6 mt-2 md:mt-0">
               <a href="#" className="hover:text-white transition-colors">Twitter</a>
               <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
               <a href="#" className="hover:text-white transition-colors">GitHub</a>
