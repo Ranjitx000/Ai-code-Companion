@@ -292,7 +292,7 @@ app.use(cors({
 }));
 
 // Handle preflight OPTIONS requests for all routes
-app.options('*', cors());
+app.options('/*splat', cors());
 
 app.use(express.json({ limit: '5mb' }));
 
