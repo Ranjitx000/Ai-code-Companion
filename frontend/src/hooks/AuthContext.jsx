@@ -64,8 +64,9 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider value={value}>
       {loading ? (
-        <div className="fixed inset-0 bg-slate-950 flex items-center justify-center">
-          <Lottie animationData={loaderAnimation} loop={true} style={{ width: 300, height: 300 }} />
+        <div className="fixed inset-0 bg-white flex flex-col items-center justify-center font-sans transition-opacity duration-500">
+          <div className="w-8 h-8 border-2 border-gray-200 border-t-gray-900 rounded-full animate-spin [animation-duration:1.5s] mb-4"></div>
+          <p className="text-sm font-medium tracking-widest text-gray-400 uppercase">Loading Questly</p>
         </div>
       ) : (
         children

@@ -343,20 +343,31 @@ export default function LoginPage({ onClose }) {
   };
 
   return (
-    <div className="w-full max-w-[1000px] h-[600px] grid lg:grid-cols-2 bg-slate-900 rounded-3xl overflow-hidden shadow-2xl relative">
+    <div className="w-full max-w-[1000px] h-[600px] grid lg:grid-cols-2 rounded-3xl overflow-hidden relative font-sans"
+         style={{ background: '#dde1e7', boxShadow: '10px 10px 30px rgba(0,0,0,0.15), -10px -10px 30px rgba(255,255,255,0.1)' }}>
       <button 
         onClick={onClose}
-        className="absolute top-4 right-4 p-2 text-slate-400 hover:text-white transition-colors z-[100] hover:bg-white/10 rounded-full"
+        className="absolute top-4 right-4 p-2 text-gray-500 hover:text-gray-900 transition-all z-[100] rounded-full"
+        style={{
+          background: '#dde1e7',
+          boxShadow: '3px 3px 8px #b8bec9, -3px -3px 8px #ffffff'
+        }}
+        onMouseDown={e => e.currentTarget.style.boxShadow = 'inset 2px 2px 5px #b8bec9, inset -2px -2px 5px #ffffff'}
+        onMouseUp={e => e.currentTarget.style.boxShadow = '3px 3px 8px #b8bec9, -3px -3px 8px #ffffff'}
+        onMouseLeave={e => e.currentTarget.style.boxShadow = '3px 3px 8px #b8bec9, -3px -3px 8px #ffffff'}
       >
-        <X size={24} />
+        <X size={20} />
       </button>
 
       {/* Left Content Section */}
-      <div className="relative hidden lg:flex flex-col justify-between bg-gradient-to-br from-indigo-600 via-violet-600 to-purple-600 p-12 text-white overflow-hidden">
+      <div className="relative hidden lg:flex flex-col justify-between p-12 text-gray-900 overflow-hidden"
+           style={{
+             background: '#dde1e7',
+             boxShadow: 'inset -5px 0 10px -5px #b8bec9'
+           }}>
         <div className="relative z-20">
-          <div className="flex items-center gap-2 text-lg font-semibold">
-            {/*  */}
-            <span>AI Code Reviewer</span>
+          <div className="flex items-center gap-2 text-lg font-bold tracking-tight">
+            <span>AI Code <span className="text-gray-500">Companion</span></span>
           </div>
         </div>
 
@@ -365,13 +376,13 @@ export default function LoginPage({ onClose }) {
             {/* Purple character */}
             <div 
               ref={purpleRef}
-              className="absolute bottom-0 transition-all duration-700 ease-in-out"
+              className="absolute bottom-0 transition-all duration-700 ease-in-out shadow-sm"
               style={{
                 left: '70px',
                 width: '180px',
                 height: (isTyping || (password.length > 0 && !showPassword)) ? '390px' : '350px',
                 backgroundColor: '#6C3FF5',
-                borderRadius: '10px 10px 0 0',
+                borderRadius: '16px 16px 0 0',
                 zIndex: 1,
                 transform: (password.length > 0 && showPassword)
                   ? `skewX(0deg)`
@@ -396,13 +407,13 @@ export default function LoginPage({ onClose }) {
             {/* Black character */}
             <div 
               ref={blackRef}
-              className="absolute bottom-0 transition-all duration-700 ease-in-out"
+              className="absolute bottom-0 transition-all duration-700 ease-in-out shadow-sm"
               style={{
                 left: '240px',
                 width: '120px',
                 height: '260px',
                 backgroundColor: '#2D2D2D',
-                borderRadius: '8px 8px 0 0',
+                borderRadius: '12px 12px 0 0',
                 zIndex: 2,
                 transform: (password.length > 0 && showPassword)
                   ? `skewX(0deg)`
@@ -429,7 +440,7 @@ export default function LoginPage({ onClose }) {
             {/* Orange character */}
             <div 
               ref={orangeRef}
-              className="absolute bottom-0 transition-all duration-700 ease-in-out"
+              className="absolute bottom-0 transition-all duration-700 ease-in-out shadow-sm"
               style={{
                 left: '0px',
                 width: '200px',
@@ -456,7 +467,7 @@ export default function LoginPage({ onClose }) {
             {/* Yellow character */}
             <div 
               ref={yellowRef}
-              className="absolute bottom-0 transition-all duration-700 ease-in-out"
+              className="absolute bottom-0 transition-all duration-700 ease-in-out shadow-sm"
               style={{
                 left: '310px',
                 width: '120px',
@@ -488,38 +499,44 @@ export default function LoginPage({ onClose }) {
             </div>
           </div>
         </div>
-
-        <div className="absolute inset-0 bg-white/5 bg-[size:20px_20px]" />
       </div>
 
       {/* Right Login Section */}
-      <div className="flex flex-col items-center justify-center p-8 bg-slate-900 overflow-y-auto">
+      <div className="flex flex-col items-center justify-center p-8 overflow-y-auto" style={{ background: '#dde1e7' }}>
         <div className="w-full max-w-[360px]">
-          <div className="text-center mb-6">
-            <h1 className="text-2xl font-bold text-white mb-2">{isLogin ? 'Welcome back!' : 'Create account'}</h1>
-            <p className="text-slate-400 text-sm">{isLogin ? 'Please enter your details' : 'Join us today'}</p>
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-black text-gray-700 mb-2 tracking-tight">{isLogin ? 'Welcome back' : 'Create account'}</h1>
+            <p className="text-gray-500 text-sm font-medium">{isLogin ? 'Please enter your details to continue.' : 'Join AI Code Companion today.'}</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-1.5">
-              <Label htmlFor="email" className="text-xs text-slate-300">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="anna@example.com"
-                value={email}
-                autoComplete="off"
-                onChange={(e) => setEmail(e.target.value)}
-                onFocus={() => setIsTyping(true)}
-                onBlur={() => setIsTyping(false)}
-                required
-                className="h-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-500 focus:ring-violet-500"
-              />
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-2">
+              <Label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-gray-500 ml-2">Email</Label>
+              <div 
+                className="rounded-xl overflow-hidden"
+                style={{ boxShadow: 'inset 4px 4px 10px #b8bec9, inset -4px -4px 10px #ffffff' }}
+              >
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="anna@example.com"
+                  value={email}
+                  autoComplete="off"
+                  onChange={(e) => setEmail(e.target.value)}
+                  onFocus={() => setIsTyping(true)}
+                  onBlur={() => setIsTyping(false)}
+                  required
+                  className="h-12 w-full bg-transparent border-none text-gray-700 font-medium placeholder:text-gray-400 focus-visible:ring-0 px-4"
+                />
+              </div>
             </div>
 
-            <div className="space-y-1.5">
-              <Label htmlFor="password" title="password" className="text-xs text-slate-300">Password</Label>
-              <div className="relative">
+            <div className="space-y-2">
+              <Label htmlFor="password" title="password" className="text-xs font-bold uppercase tracking-wider text-gray-500 ml-2">Password</Label>
+              <div 
+                className="relative rounded-xl overflow-hidden"
+                style={{ boxShadow: 'inset 4px 4px 10px #b8bec9, inset -4px -4px 10px #ffffff' }}
+              >
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
@@ -527,43 +544,80 @@ export default function LoginPage({ onClose }) {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="h-10 pr-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-500 focus:ring-violet-500"
+                  className="h-12 w-full pr-12 bg-transparent border-none text-gray-700 font-medium placeholder:text-gray-400 focus-visible:ring-0 px-4"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors p-2"
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
             </div>
 
-            {error && <div className="p-2 text-xs text-red-400 bg-red-400/10 border border-red-400/20 rounded-lg">{error}</div>}
+            {error && <div className="p-3 text-sm text-red-600 bg-red-50/50 border border-red-100 rounded-xl font-medium">{error}</div>}
 
-            <Button type="submit" className="w-full h-10 bg-violet-600 hover:bg-violet-700 text-white transition-all font-semibold" disabled={loading}>
+            <button 
+              type="submit" 
+              className="w-full h-12 text-gray-600 font-bold tracking-wide rounded-xl transition-all mt-4" 
+              disabled={loading}
+              style={{
+                background: '#dde1e7',
+                boxShadow: '4px 4px 10px #b8bec9, -4px -4px 10px #ffffff'
+              }}
+              onMouseDown={e => {
+                if (!loading) e.currentTarget.style.boxShadow = 'inset 3px 3px 8px #b8bec9, inset -3px -3px 8px #ffffff';
+              }}
+              onMouseUp={e => {
+                if (!loading) e.currentTarget.style.boxShadow = '4px 4px 10px #b8bec9, -4px -4px 10px #ffffff';
+              }}
+              onMouseLeave={e => {
+                if (!loading) e.currentTarget.style.boxShadow = '4px 4px 10px #b8bec9, -4px -4px 10px #ffffff';
+              }}
+            >
               {loading ? "Processing..." : isLogin ? "Log in" : "Sign up"}
-            </Button>
+            </button>
           </form>
 
-          <div className="relative my-6">
-            <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-800"></div></div>
-            <div className="relative flex justify-center text-[10px] uppercase font-bold tracking-wider"><span className="bg-slate-900 px-3 text-slate-500">Or continue with</span></div>
+          <div className="relative my-8">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full h-[2px]" style={{ background: '#dde1e7', boxShadow: 'inset 1px 1px 3px #b8bec9, inset -1px -1px 3px #ffffff' }}></div>
+            </div>
+            <div className="relative flex justify-center text-[10px] uppercase font-bold tracking-wider">
+              <span className="px-4 text-gray-500" style={{ background: '#dde1e7' }}>Or continue with</span>
+            </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <Button variant="outline" className="h-10 bg-slate-800/50 border-slate-700 text-white hover:bg-slate-800" type="button" onClick={handleGoogleLogin}>
+          <div className="grid grid-cols-2 gap-4">
+            <button 
+              type="button" 
+              onClick={handleGoogleLogin}
+              className="flex items-center justify-center h-12 text-gray-600 font-bold tracking-wide rounded-xl transition-all"
+              style={{ background: '#dde1e7', boxShadow: '4px 4px 10px #b8bec9, -4px -4px 10px #ffffff' }}
+              onMouseDown={e => e.currentTarget.style.boxShadow = 'inset 3px 3px 8px #b8bec9, inset -3px -3px 8px #ffffff'}
+              onMouseUp={e => e.currentTarget.style.boxShadow = '4px 4px 10px #b8bec9, -4px -4px 10px #ffffff'}
+              onMouseLeave={e => e.currentTarget.style.boxShadow = '4px 4px 10px #b8bec9, -4px -4px 10px #ffffff'}
+            >
               <GoogleIcon className="mr-2 size-4" /> Google
-            </Button>
-            <Button variant="outline" className="h-10 bg-slate-800/50 border-slate-700 text-white hover:bg-slate-800" type="button" onClick={handleGithubLogin}>
-              <GithubIcon className="mr-2 size-4" /> GitHub
-            </Button>
+            </button>
+            <button 
+              type="button" 
+              onClick={handleGithubLogin}
+              className="flex items-center justify-center h-12 text-gray-600 font-bold tracking-wide rounded-xl transition-all"
+              style={{ background: '#dde1e7', boxShadow: '4px 4px 10px #b8bec9, -4px -4px 10px #ffffff' }}
+              onMouseDown={e => e.currentTarget.style.boxShadow = 'inset 3px 3px 8px #b8bec9, inset -3px -3px 8px #ffffff'}
+              onMouseUp={e => e.currentTarget.style.boxShadow = '4px 4px 10px #b8bec9, -4px -4px 10px #ffffff'}
+              onMouseLeave={e => e.currentTarget.style.boxShadow = '4px 4px 10px #b8bec9, -4px -4px 10px #ffffff'}
+            >
+              <GithubIcon className="mr-2 size-4 text-gray-700" /> GitHub
+            </button>
           </div>
 
-          <div className="text-center text-xs text-slate-400 mt-6">
+          <div className="text-center text-sm font-medium text-gray-500 mt-8">
             {isLogin ? "Don't have an account? " : "Already have an account? "}
-            <button onClick={() => setIsLogin(!isLogin)} className="text-violet-400 font-bold hover:underline">
-              {isLogin ? 'Sign Up' : 'Sign In'}
+            <button onClick={() => setIsLogin(!isLogin)} className="text-gray-900 font-bold hover:underline">
+              {isLogin ? 'Sign up' : 'Log in'}
             </button>
           </div>
         </div>
